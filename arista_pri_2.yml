@@ -1,0 +1,32 @@
+---
+- name: Arista Ansible testing
+  hosts: arista
+
+  tasks:
+    - name: Changing Eth4 description
+      eos_interface: name=Ethernet4 description="*** IN USE ***"
+            eapi_username={{ eapi_username }}
+            eapi_password={{ eapi_password }}
+            eapi_hostname={{ eapi_hostname }}
+            eapi_port={{ eapi_port }}
+
+    - name: Set Eth4 to access, VLAN222
+      eos_switchport: name=Ethernet4 mode=access access_vlan=222 trunk_allowed_vlans=all
+            eapi_username={{ eapi_username }}
+            eapi_password={{ eapi_password }}
+            eapi_hostname={{ eapi_hostname }}
+            eapi_port={{ eapi_port }}
+
+(applied_python)[abrown@ip-172-30-0-168 ARISTA]$ cat arista_pri_2.yml
+---
+- name: Arista Ansible testing
+  hosts: arista
+
+  tasks:
+    - name: Set Ethernet4 to trunk native VL1, allow 111,222,333
+      eos_switchport: name=Ethernet4 mode=trunk trunk_native_vlan=1 trunk_allowed_vlans=111,222,333
+            eapi_username={{ eapi_username }}
+            eapi_password={{ eapi_password }}
+            eapi_hostname={{ eapi_hostname }}
+            eapi_port={{ eapi_port }}
+
